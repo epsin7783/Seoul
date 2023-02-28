@@ -1,0 +1,30 @@
+{% extends "base_board.html" %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		{% block title %}
+			<h2> JQuery Ajax - JSON </h2>
+		{% endblock %}
+		{% block content %}
+			목록을 출력합니다 
+			{% csrf_token %}
+			<input class="inputbutton" type="button" value="목록">
+			<br><br>
+			<div id="result"></div>
+		{% endblock %}
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

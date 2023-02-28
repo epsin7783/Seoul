@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">	
+	</head>
+	<body>
+		{% block title %}
+			
+		{% endblock %}
+		{% block content %}
+			<div class="hero hero-inner">
+		    	<div class="container">
+		      		<div class="row align-items-center">
+		        		<div class="col-lg-6 mx-auto text-center">
+		          			<div class="intro-wrap">
+		            			<h1 class="mb-0">Q & A</h1><br><br>              
+		          			</div>
+		        		</div>
+		      		</div>
+		      		<table>
+		         		<h6 class="text-white text-center">비밀번호를 입력해 주세요</h6> 
+		      		</table>
+		    	</div>
+  			</div>
+  			<div class="container mt-4">
+				<form method="post" action="bmodify" name="passwdform">
+					{% csrf_token %}
+					<input type="hidden" name="num" value="{{num}}">
+					<input type="hidden" name="pagenum" value="{{pagenum}}">
+					<div>
+						<div class="row">
+							<div class="col-4"></div>
+							<div class="col-4">
+								<input class="form-control" type="password" name="passwd" maxlength="30" autofocus placeholder="비밀번호">
+								{% if message %}
+									<span class="text-danger">{{message}}</span>								
+								{% else %}
+									<span>비밀번호를 입력해 주세요</span>
+								{% endif %}
+								
+							</div>
+							<div class="col-4"></div>
+						</div>
+						<div class="py-4 text-center">
+							<input class="btn btn-primary" type="submit" value="수정">
+							<input class="btn btn-secondary" type="button" value="수정취소" onclick="location='list?pagenum={{pagenum}}'">
+						</div>
+					</div>
+					
+				</form>		
+			</div>
+		{% endblock %}
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

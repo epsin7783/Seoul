@@ -1,0 +1,273 @@
+{% extends "base_board.html" %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">	
+	</head>
+	<body>
+		{% block title %}
+			<h2> Web SQL </h2>
+		{% endblock %}
+		{% block content %}
+			<script type="text/javascript">
+				// <!--
+				$(document).ready(
+					function() {
+						var db = null;
+						if( ! window.openDatabase ) {
+							$("#output").html( "지원하지 않는 브라우저입니다<br>" );
+							return;							
+						} else {
+							$("#output").html( "지원하는 브라우저입니다<br>" );
+							db = openDatabase( "mydb", "1.0", "회원정보", 1024*1024*5 );
+							db.transaction(
+								function( tx ) {
+									tx.executeSql(
+										"create table member( "
+											+ "id varchar2 primary key,"
+											+ "name varchar2(30) not null," 
+											+ "tel varchar2(20) )"										
+									);		
+								},
+								function( error ) {		// 테이블이 있다
+									$("#output").html( error.message + "<br>" );					
+								},
+								function() {			// 테이블 없다
+									$("#output").html( "테이블을 생성했습니다<br>" );
+								}
+							);
+						}						
+						
+						// 가입
+						$("input[value='가입']").on(
+							"click",
+							function( event ) {
+								var id = $("input[name='id']").val();
+								var name = $("input[name='name']").val();
+								var tel = $("input[name='tel']").val();
+								if( ! id || ! name ) {
+									$("#output").html( "아이디와 이름을 입력하세요<br>" );
+								} else {
+									$("#output").html( "" );
+									db.transaction(
+										function( tx ) {	
+											tx.executeSql(
+												"insert into member values( ?, ?, ? )",
+												[id, name, tel],
+												function() {},
+												function() {}
+											);
+										},
+										function( error ) {
+											$("#output").html( "가입 실패 : " + error.message );
+										},
+										function(){
+											$("input[name='id']").val("");
+											$("input[name='name']").val("");
+											$("input[name='tel']").val("");
+											$("#output").html( "가입 성공<br>" );
+										}
+									);
+									
+								}
+							}
+						);
+						
+						// 확인
+						$("input[value='확인']").on(
+							"click",
+							function( event ) {								
+								var id = $("input[name='id']").val();
+								if( id ) {
+									// 해당 아이디만 출력							
+									db.transaction(
+										function( tx ) {
+											tx.executeSql(
+												"select * from member where id=?",
+												[id],
+												show
+											);
+										},
+										function( error ) {
+											$("#output").html( "확인 실패 : " + error.message );
+										}, 
+										function() {
+											$("input[name='id']").val( "" );
+											$("#output").html( "확인 성공<br>" );											
+										}
+									);									
+								} else {
+									// 전체 출력
+									db.transaction(
+										function( tx ) {
+											tx.executeSql(
+												"select * from member",
+												[],
+												show
+											);
+										}, 
+										function( error ) {
+											$("#output").html( "확인 실패 : " + error.message );
+										}, 
+										function() {
+											$("#output").html( "확인 성공<br>" );	
+										}									
+									);									
+								}								
+							}							
+						);
+						function show(tx, rs) {
+							if( rs.rows && rs.rows.length ) {			
+								var tb = document.getElementById( "tb" );
+								tb.innerHTML = "";
+								var msg = "";
+								for( var i=0; i<rs.rows.length; i++ ) {
+									//var row = tb.insertRow();
+									//var col1 = row.insertCell();
+									//var col2 = row.insertCell();
+									//var col3 = row.insertCell();									
+									//col1.innerHTML = rs.rows.item(i).id;
+									//col2.innerHTML = rs.rows.item(i).name;
+									//col3.innerHTML = rs.rows.item(i).tel;
+									
+									msg += "<tr>"
+										+ 		"<td align='center'>" + rs.rows.item(i).id + "</td>"
+										+ 		"<td align='center'>" + rs.rows.item(i).name + "</td>"
+										+ 		"<td align='center'>" + rs.rows.item(i).tel + "</td>"
+										+ "</tr>"
+										
+								}
+								tb.innerHTML = msg;
+							}									
+						}
+					
+						// 수정
+						$("input[value='수정']").on(
+							"click",
+							function( event ) {
+								var id = $("input[name='id']").val();
+								var name = $("input[name='name']").val();
+								var tel = $("input[name='tel']").val();
+								if( ! id || ! name ) {
+									$("#output").html( "아이디와 이름을 입력하세요<br>" );	
+								} else {
+									db.transaction(
+										function( tx ) {
+											tx.executeSql(
+												"select * from member where id=?",
+												[id],
+												function( tx, rs ) {
+													if( rs.rows.length == 0 ) {
+														// 아이디가 없다
+														$("#output").html( "입력하신 아이디가 없습니다<br>" );	
+													} else {
+														// 아이디가 있다
+														tx.executeSql(
+															"update member set name=?, tel=? where id=?",
+															[name, tel, id],
+															function( tx, rs ) {
+																$("input[name='id']").val( "" );
+																$("input[name='name']").val( "" );
+																$("input[name='tel']").val( "" );
+																$("#output").html( "수정 성공<br>" );		
+															}
+														);														
+													}
+												}											
+											);											
+										},
+										function( error ) {
+											$("#output").html( "수정 실패 : " + error.message );		
+										}, 
+										function() {
+											// $("#output").html( "수정 성공<br>" );	
+										}									
+									);									
+								}								
+							}						
+						);
+						
+						// 탈퇴
+						$("input[value='탈퇴']").on(
+							"click",
+							function( event ) {
+								var id = $("input[name='id']").val();
+								if( ! id ) {
+									$("#output").html( "아이디를 입력하세요<br>" );
+								} else {
+									db.transaction(
+										function( tx ) {
+											tx.executeSql(
+												"delete from member where id=?",
+												[id]
+											);
+										}, 
+										function( error ) {
+											$("#output").html( "탈퇴 실패 : " + error.message );
+										},
+										function() {
+											$("input[name='id']").val( "" );
+											$("#output").html( "탈퇴 성공<br>" );
+										}
+									);									
+								}
+							}						
+						);
+						
+						
+						
+					}					
+				);				
+				//-->
+			</script>
+			
+			<table>
+				<tr>
+					<th> 아이디 </th>
+					<td> <input class="input" type="text" name="id" placeholder="필수항목"> </td>
+				</tr>
+				<tr>
+					<th> 이름 </th>
+					<td> <input class="input" type="text" name="name" placeholder="필수항목"> </td>
+				</tr>
+				<tr>
+					<th> 전화번호 </th>
+					<td> <input class="input" type="text" name="tel"> </td>
+				</tr>
+				<tr>
+					<th colspan="2">
+						<input class="inputbutton" type="button" value="가입">
+						<input class="inputbutton" type="button" value="수정">
+						<input class="inputbutton" type="button" value="탈퇴">
+						<input class="inputbutton" type="button" value="확인">
+					</th>
+				</tr>			
+			</table>
+			<br><br>
+			<div id="output"></div>
+			<br><br>
+			<table>
+				<tr>
+					<th> 아이디 </th>
+					<th> 이름 </th>
+					<th> 전화번호 </th>
+				</tr>
+				<tbody id="tb"></tbody>
+			</table>
+		{% endblock %}
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+</head>
+<body>
+		{% block title %}
+			
+		{% endblock %}
+		{% block content %}
+			<div class="hero hero-inner">
+		    	<div class="container">
+		      		<div class="row align-items-center">
+		        		<div class="col-lg-6 mx-auto text-center">
+		          			<div class="intro-wrap">
+		            			<h1 class="mb-0">Q & A</h1><br><br>              
+		          			</div>
+		        		</div>
+		      		</div>
+		      		<table>
+		         		<h6 class="text-white text-center">글을 수정해 주세요</h6> 
+		      		</table>
+		    	</div>
+  			</div>
+  			<div class="container mt-3">
+				<form method="post" action="bmodifypro" name="modifyform">
+					{% csrf_token %}
+					<input type="hidden" name="num" value="{{num}}">
+					<input type="hidden" name="pagenum" value="{{pagenum}}">
+					
+					<div class="mb-2">
+						<label>작성자</label>
+						<input class="form-control" type="text" value="{{dto.writer}}" readonly>
+					</div>		
+					<div class="mb-2">
+						<label>글제목</label>
+						<input class="form-control" type="text" name="subject" value="{{dto.subject}}">
+					</div>	
+					<div class="mb-2">
+						<label>글내용</label>
+						<textarea class="form-control" name="content" rows="10" cols="40">{{dto.content}}</textarea>
+					</div>	
+					<!-- <div class="mb-2">
+						<label>비밀번호</label>
+						<input class ="form-control" type ="password" name="passwd" maxlength="30" value="{{dto.passwd}}">
+					</div> -->
+					<div class="mb-2 py-4 text-center">
+						<input class ="btn btn-primary mr-1" type ="submit" value="수정">
+						<input class ="btn btn-secondary mr-1" type ="reset" value="취소">
+						<input class ="btn btn-secondary" type ="button" value="수정취소" onclick="location='list?pagenum={{pagenum}}'">
+					</div>	
+					
+				</form>
+			</div>
+		{% endblock %}
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "base_board.html" %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">	
+	</head>
+	<body>
+		{% block title %}
+			<h2> Jquery Ajax - Text </h2>
+		{% endblock %}
+		{% block content %}
+			<form name="inputform">
+			{% csrf_token %}
+				<table>
+					<tr>
+						<th> 아이디 </th>
+						<td> <input class="input" type="text" name="id"> </td>
+					</tr>
+					<tr>
+						<th> 비밀번호 </th>
+						<td> <input class="input" type="password" name="passwd"> </td>
+					</tr>
+					<tr>
+						<th colspan="2">
+							<input class="inputbutton" type="button" value="전송">
+								
+						</th>
+					</tr>
+				</table>
+			</form>
+				<br>
+				<div id="result"></div>
+			
+		{% endblock %}
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
