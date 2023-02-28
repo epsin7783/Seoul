@@ -1,0 +1,104 @@
+{% extends "base_board.html" %}
+<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="UTF-8">		
+	</head>
+	<body>
+		{% block title %}
+			<h2> WebStorage - LocalStorage </h2>
+		{% endblock %}
+		{% block content %}
+			<script type="text/javascript">
+				// <!--
+				$(document).ready(
+					function() {
+						if( ! window.localStorage ) {
+							$("#output").html( "지원하지 않는 브라우저 입니다<br>" );
+							return;
+						} else {
+							$("#output").html( "지원하는 브라우저 입니다<br>" );
+							
+							$("input[value='저장하기']").on(
+								"click",
+								function( event ) {									
+									input = $("textarea#input").val();	
+									if( ! input ) {
+										$("#output").html( "내용을 입력하세요<br>" )	
+										return;
+									}
+									localStorage.setItem( "input", input );
+									$("#input").val( "" );									
+									$("#output").html( "내용을 저장했습니다<br>" );								
+								}								
+							);
+							$("input[value='가져오기']").on(
+								"click",
+								function( event ) {
+									// $("#result").html( localStorage.getItem( "input" ) );
+									var msg = "";
+									for( var i=0; i<localStorage.length; i++ ) {
+										key = localStorage.key( i );
+										value = localStorage[ key ];
+										msg += key + " : " + value + "<br>";
+									}
+									if( ! msg ) {
+										$("#output").html( "내용이 없습니다<br>" );
+									} else {
+										$("#result").html( msg );
+										$("#output").html( "내용을 가져왔습니다<br>" );
+									}
+									$("#input").val( "" );									
+								}
+							);
+							$("input[value='삭제하기']").on(
+								"click",
+								function( event ) {
+									localStorage.clear();
+									$("#result").html( "" );
+									$("#input").html( "" );
+									
+									$("#output").html( "내용을 삭제했습니다<br>" )
+								}							
+							);
+							
+							
+						}					
+					}				
+				);			
+				//-->
+			</script>	
+				
+			<table>
+				<tr>
+					<th>
+						<textarea id="input" cols="50" rows=10></textarea>
+					</th>					
+				</tr>
+				<tr>
+					<th>
+						<input class="inputbutton" type="button" value="저장하기">
+						<input class="inputbutton" type="button" value="가져오기">
+						<input class="inputbutton" type="button" value="삭제하기">
+					</th>
+				</tr>
+			</table>	
+			<br><br>
+			<div id="result"></div>
+			<br><br>
+			<div id="output"></div>		
+		{% endblock %}	
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

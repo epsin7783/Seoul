@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load mathfilters %} 
+{% load static %}
+
+<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="UTF-8">	
+	</head>
+	<body>
+		{% block title %}
+		<!-- 비회원 접근불가 로그인필요 -->
+		<input type="hidden" name="memid" value="{{memid}}">
+		<script>
+			var memid = $("input[name='memid']").val();
+			if(!memid){
+				alert("로그인이 필요합니다");
+				location.href="/member/login";
+			}
+			
+		</script>
+		{% endblock %}
+		
+   		{% block content %}
+		<div class="hero hero-inner">
+		   	<div class="container">
+		   		<div class="row align-items-center">
+		       		<div class="col-lg-6 mx-auto text-center">
+		       			<div class="intro-wrap">
+		           			<h1 class="mb-0">일정공유게시</h1><br><br>              
+		       			</div>
+		       		</div>
+		   		</div>
+		   		<table>
+		       		<h6 class="text-white text-center">나만의 일정을 공유해 보세요</h6> 
+		   		</table>
+		   	</div>
+  		</div>
+
+		<div class="container py-4">
+			<form method="post" action="plansharewrite" name="planshareform" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="confirm" value="0">
+				<div>
+					<div class="mb-3">
+						<button type="button" id="search" class="btn btn-outline-info px-5">일정선택하기</button>
+						&nbsp;&nbsp;선택한 일정 : 
+						<input type="text" id="plantitle" value="" style="border:none;" readonly>
+						<input type="hidden" id="planno" name="planno" value="">
+						<input type="hidden" name="id" value="{{memid}}">
+					</div>
+					<div class="mb-2">
+						<label>작성자</label>
+						<input class="form-control" type="text" name="nickname" value="{{nickname}}" readonly>
+					</div>
+					<div class="mb-2">
+						<label>제목</label>
+						<input class="form-control" type="text" id="title" name="title" maxlength="50" readonly>
+					</div>
+					<div class="mb-2">
+						<label>내용</label>
+						<textarea class="form-control" name="content" rows="7" placeholder="ex)여행계획, 공유꿀팁"></textarea>
+					</div>
+					<div class="mb-2">
+						<label>썸네일</label>
+						<input class="form-control" type="file" accept="image/*" name="image">
+					</div>
+					
+					<div class="text-center py-4">
+						<input class="btn btn-primary mr-1" type="button" onclick="formsubmit()" value="작성하기">
+	                    <!-- <input class="btn btn-secondary mr-1" type="reset" value="다시작성"> -->
+	                    <input class="btn btn-secondary" type="button" value="돌아가기" onclick="location='/plan/plansharepage'">
+					</div>
+				</div>
+			</form>
+		</div>
+		      
+		<script>
+			$("#search").click(function(){
+				window.open("/plan/planselect", '일정선택', 'width=800px,height=600px,scrollbars=yes');
+			});
+			
+			function formsubmit(){			
+				var content = $("textarea[name='content']").val();
+				var no = $("input[name='planno']").val();
+				if(!no){
+					alert("일정선택하기 버튼을 눌러 일정을 선택해 주세요");
+					return false;
+				}else if(!content){
+					alert("내용을 작성해 주세요");
+					content.focus();
+					return false;
+				}else{
+					var conf = confirm("선택한 일정을 공유하시겠습니까?");
+					if(conf){
+						$("form[name='planshareform']").submit();					
+					}else{
+						return false;
+					}
+				}
+			}
+		</script>
+    {% endblock %}
+
+
+	</body>
+</html>

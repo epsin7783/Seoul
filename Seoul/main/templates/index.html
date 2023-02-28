@@ -1,0 +1,360 @@
+{% extends 'base.html'%}
+{%load static%}
+{%load mathfilters%}
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="author" content="Untree.co">
+      <link rel="shortcut icon" href="favicon.png">
+      <meta name="description" content="" />
+      <meta name="keywords" content="bootstrap, bootstrap4" />
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet">
+   
+      <!-- CSS here -->
+      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+      <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css'%}">
+      <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css'%}">
+      <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css'%}">
+      <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css'%}">
+      <link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css'%}">
+      <link rel="stylesheet" href="{% static 'css/daterangepicker.css'%}">
+      <link rel="stylesheet" href="{% static 'css/aos.css'%}">
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">               
+       <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+      </head>
+
+<body>
+
+
+{% block title %}
+
+<div class="hero">
+    <div class="container">
+
+   
+   
+         <div class="row align-items-center">
+            <div class="col-lg-7">
+               <div class="intro-wrap">
+                  
+                  <h1 class="ml-5"><span class="d-block">Let's Enjoy Your</span> Trip In <span class="typed-words"></span></h1>
+
+                  <div class="row">
+                     <div class="col-12">
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-5">
+               <div class="slides">
+                  <img src="{% static 'images/m1.jpg' %}" alt="Image" class="img-fluid active">
+                  <img src="{% static 'images/m3.jpg' %}" alt="Image" class="img-fluid">
+                  <img src="{% static 'images/m4.jpg' %}" alt="Image" class="img-fluid">
+                  <img src="{% static 'images/m5.jpg' %}" alt="Image" class="img-fluid">
+                  <img src="{% static 'images/m2.jpg' %}" alt="Image" class="img-fluid">
+                  
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   
+{% endblock %}
+
+
+
+{% block content %}
+<style>
+body {
+    font-size: 14px;
+    background: #FFF;
+    color: #333;
+    margin: 0;
+}
+
+#content {
+    margin: 5px;
+    padding: 5px;
+    border-radius : 10px;
+    background: #1A374D;
+}
+
+
+
+#rank-list a:hover {
+    text-decoration: underline;
+}
+
+#rank-list {
+    overflow: hidden;
+    width: 100%;
+    height: 20px;
+    margin: 0px;
+}
+
+/* #rank-list div {
+    display: none;
+} */
+
+#rank-list div {
+    position: relative;
+    margin: 0;
+}
+
+#rank-list ol {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding-left: 10px;
+    list-style-type: none;
+}
+
+#rank-list li {
+    height: 20px;
+    line-height: 20px;
+    color: #FFF;
+    text-decoration: none;
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+
+</style>
+
+
+   <div class="untree_co-section">
+      <div class="container">
+         <div class="row">
+          <div class="col-md-8">
+            <figure class="highcharts-figure">
+               <div id="covidgraph">
+                  <div id="container3" ></div>
+               </div>
+            </figure>
+          </div>
+          <div class="col-md-4">
+             <div class="mb-2" style="text-align:center"><h5>실시간 인기 방문장소</h5></div><hr>
+          {% for dto in dtoRank %}
+             <div id="content">
+                     <div id="rank-list" style="margin-right:0;">
+                         <div>
+                             <ol>
+                               <li>{{forloop.counter}}. {{dto.place}}</li>
+                               <li>{{forloop.counter}}. {{dto.place}}</li>
+                             </ol>
+                         </div>
+                     </div>
+                 </div>
+            {% endfor %}
+                <script>
+            $(function() {
+               setInterval(function(){
+                   var count = 1;
+                   var height = 20;
+                   function step(index) {
+                      $('#rank-list ol').delay(500).animate({
+                           top: -height * index,
+                       }, 400, function() {
+                           step((index + 1) % count);
+                       });
+                   }
+               
+                   step(1);
+               }, 200);
+            })
+            </script>
+             
+          </div>
+         </div>
+      </div>
+     </div>
+	<!-- 예상 유동인구수 start-->
+     
+	<div class="container py-5">
+		<div class="row text-center justify-content-center mb-5">
+            <div class="col-lg-7"><h3 class="section-title text-center">예상인구수</h3></div>
+         </div>
+		<div class="row" id="test111">
+			<div class="form-group col-sm-4 center">
+				<div class="select-control">
+				<label for="locationKindU">장소 선택</label>
+				<select class="form-control" id="locationKindU" name="locationKindU" onchange="locationKindChange2(this)">
+				     <option> 장소 선택 </option>
+				     <option value='a2'> 고궁ㆍ문화유산 </option>
+				     <option value='b2'> 공원 </option>
+				     <option value='c2'> 관광특구 </option>
+				     <option value='d2'> 발달상권 </option>
+				     <option value='e2'> 인구밀집지역 </option>
+				</select>
+				</div>
+			</div>
+		    <div class="form-group col-sm-4">
+		       <label for="locationKindD2">세부 장소</label>
+		        <select class="form-control" id="locationKindD2" name="locationKindD2">
+		           <option> 세부 장소 선택 </option>
+		        </select>
+		    </div>
+		    <div class="form-group col-sm-4">
+		       <label for="locationDay"> 요일 </label>
+		        <select class="form-control" id="locationDay" name="locationDay">
+		           <option> 요일 선택 </option>
+		           <option value='0'>월</option>
+		           <option value='1'>화</option>
+		           <option value='2'>수</option>
+		           <option value='3'>목</option>
+		           <option value='4'>금</option>
+		           <option value='5'>토</option>
+		           <option value='6'>일</option>
+		        </select>
+		    </div>
+		</div>
+	</div> 
+     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+     <input type="hidden" name="pred_sum" value="">
+
+	<div id="chartImg2" class="text-center container px-0">
+		<h3>예상이미지</h3>
+		<img src="{% static 'images/chart2.png' %}">
+	</div> 
+	<div id="popChart" class="text-center container px-0 mt-5" style="display:none;height:400px;">
+		<figure class="highcharts-figure" >
+			<div id="pop_rate_graph">
+				<div id="container4" ></div>
+			</div>
+		</figure>
+	</div>
+     
+     <!-- 예상 유동인구수 end-->
+     
+	
+   <div style="text-align: center;"">
+	<img src="{% static 'images/sctest.png' %}" alt="Image" class="img-fluid" style="width:600px;">
+   </div>
+
+   <div class="untree_co-section">
+      <div class="container">
+         <div class="row text-center justify-content-center mb-5">
+            <div class="col-lg-7"><h3 class="section-title text-center">추천이 가장 많은 일정</h3></div>
+         </div>
+
+         <div class="owl-carousel owl-3-slider">
+         {% for dto in dtoLike %}
+            <div class="item">
+               <a class="media-thumb" href="/plan/plansharedetail?no={{dto.p_no}}">
+                  <div class="media-text py-2 px-2 rounded" style="background-color:rgba(255,255,255,0.8);">
+                     <h3>{{dto.p_title}}</h3>
+                     <div style="font-size:0.8em;" class="px-2 location text-dark">작성자 : {{dto.p_nickname}}</div>
+                     <div style="font-size:0.8em;" class="px-2 location text-dark">추천수 : {{dto.cnt}}</div>
+                  </div>
+                  <div class="fitimg">
+                     {% if dto.image %}
+                     <img src="/media/{{dto.image}}" alt="Image" class="img-fluid" style="height:250px;">
+                     {% else %}
+                     <img src="{% static 'images/travel.jpg' %}" alt="Image" class="img-fluid" style="height:250px;">
+                     {% endif %}
+                  </div>
+               </a> 
+            </div>
+         {% endfor %}
+         </div>
+
+      </div>
+   </div>
+   
+   <div class="untree_co-section">
+      <div class="container">
+         <div class="row text-center justify-content-center mb-5">
+            <div class="col-lg-7"><h3 class="section-title text-center">조회수가 가장 많은 일정</h3></div>
+         </div>
+
+         <div class="owl-carousel owl-3-slider">
+         {% for dto in dtoCount %}
+            <div class="item">
+               <a class="media-thumb" href="/plan/plansharedetail?no={{dto.p_no}}">
+                  <div class="media-text py-2 px-2 rounded" style="background-color:rgba(255,255,255,0.8);">
+                     <h3>{{dto.p_title}}</h3>
+                     <div style="font-size:0.8em;" class="px-2 location text-dark">작성자 : {{dto.p_nickname}}</div>
+                     <div style="font-size:0.8em;" class="px-2 location text-dark">조회수 : {{dto.count}}</div>
+                  </div>
+                  <div class="fitimg">
+                     {% if dto.image %}
+                     <img src="/media/{{dto.image}}" alt="Image" class="img-fluid" style="height:250px;">
+                     {% else %}
+                     <img src="{% static 'images/travel.jpg' %}" alt="Image" class="img-fluid" style="height:250px;">
+                     {% endif %}
+                  </div>
+               </a> 
+            </div>
+         {% endfor %}
+         </div>
+
+      </div>
+   </div>
+
+   
+   <script>
+      $(function() {
+         var slides = $('.slides'),
+         images = slides.find('img');
+
+         images.each(function(i) {
+            $(this).attr('data-id', i + 1);
+         })
+
+         var typed = new Typed('.typed-words', {
+            strings: [" N서울타워."," 숭례문."," 익선동.", "세빛섬.", "롯데타워."],
+            typeSpeed: 80,
+            backSpeed: 80,
+            backDelay: 4000,
+            startDelay: 1000,
+            loop: true,
+            showCursor: true,
+            preStringTyped: (arrayPos, self) => {
+               arrayPos++;
+               console.log(arrayPos);
+               $('.slides img').removeClass('active');
+               $('.slides img[data-id="'+arrayPos+'"]').addClass('active');
+            }
+
+         });
+         
+         
+      })
+      
+    /* $(window).on("load", function(){
+        function fitimg() {
+            $(".fitimg").each(function(){
+                var iw = $(this).children("img")[0].naturalWidth;
+                var ih = $(this).children("img")[0].naturalHeight;
+                var iratio = ih / iw;
+                var bw = $(this).width();
+                var bh = $(this).height();
+                var bratio = bh / bw; 
+                if(iratio > bratio){
+                    $(this).children("img").width(bw).height("auto");
+                }else{
+                    $(this).children("img").height(bh).width("auto");
+                }
+            });
+        }
+        fitimg();
+        $(window).resize(function(){
+            fitimg();
+        });
+    }); */
+   </script>
+{% endblock %}
+   
+
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+{% extends "base_board.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+		{% block title %}
+			<h2> 이미지 다운로드 </h2>
+		{% endblock %}
+		{% block content %}
+		{% for dto in dtos %}
+			{{dto.title}}<br>
+			{{dto.name}}<br>
+			{{dto.image.url}}<br>
+			{{dto.image.path}}<br>
+			<img src="{{dto.image.url}}" border="0" width = "300" height="150">
+<!-- 			<br>
+			<a href ="{{dto.image.path}}" {{dto.name}}> -->
+			<br><br>
+		{% endfor %}
+		{% endblock %}
+</body>
+</html>

@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="favicon.png">
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap4" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet">
+
+	<!-- CSS here -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+	<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css'%}">
+	<link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css'%}">
+	<link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css'%}">
+	<link rel="stylesheet" href="{% static 'fonts/icomoon/style.css'%}">
+	<link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css'%}">
+	<link rel="stylesheet" href="{% static 'css/daterangepicker.css'%}">
+	<link rel="stylesheet" href="{% static 'css/aos.css'%}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">	            
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+		
+   </head>
+
+   <body>
+   
+   
+   
+   {% block title %}
+   
+     
+   
+   {% endblock %}
+   {% block content %}
+   <script>
+	   $(document).ready(function(){
+		   	$("#locationKindD").on("change", function(){
+				let location = "";
+				let t = "http://openapi.seoul.go.kr:8088/4f4f44766365737035374170685766/xml/citydata/1/5/";
+				location = $(this).children("option:selected").text();
+				t = t + location;
+					
+				$.ajax({
+					type:"GET",
+					cache:false,
+					url:t,
+					data:{},
+					success : function(response){
+						$(response).find("CITYDATA").each(function(){
+							var time = $(this).find('PPLTN_TIME').text();
+							var name = $(this).find('AREA_NM').text();
+							var min = $(this).find('AREA_PPLTN_MIN').text();
+							var max = $(this).find('AREA_PPLTN_MAX').text();
+							$('#time').text("업데이트 시간 : "+time)
+							$('.name').text(name)
+							$('.min').text(min)
+							$('.max').text(max)
+							
+							$.ajax({
+								type:"POST",
+								url:'population',
+								dataType: "text",
+								data:{'name':name, 'min':min, 'max':max, 'time':time, "csrfmiddlewaretoken" : "{{csrf_token}}"},
+								success: function(data){
+									//alert("성공");
+								},
+								error : function(error){
+									alert(error);
+								}
+							})
+						})
+					},
+					error : function(){
+						alert('error loading xml')
+					}
+				})	
+				
+	   		})
+	   })
+   </script>
+   
+   
+      <div class="hero hero-inner">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mx-auto text-center">
+          <div class="intro-wrap">
+            <h1 class="mb-0">인구 밀집도</h1><br><br>               
+          </div>
+        </div>
+      </div>
+      <table>
+         <h4 style="color:white;">인구밀집도란?</h4><br>
+         <ul style="color:white; font-size: 18px;">1. KT '서울시 유동인구 수치분석'</ul>
+         <ul style="color:white; font-size: 18px;">2. 한국관광공사 '안전여행지수' 및 트립어드바이저 내 서울 관광명소 중 '여행자 선호도 상위 10%' 장소</ul>
+         <ul style="color:white; font-size: 18px;">3. 서울시청 산하 부서, 자치구 등 유관 기관 대상 실시간 도시 데이터 수요 조사</ul><br>
+         <h4 style="color:white;">위의 자료를 통해 서울시 주요장소 50곳을 선정, 해당 지역의 관광 및 방문결정을 위해 서울시에서 개발한 데이터</h4>
+      </table>
+    </div>
+  </div>
+   <div class="container py-5">
+      <form>
+      <div class="row">
+         <div class="form-group col-sm-6">
+         	<div class="select-control">
+            <label for="locationKindU">장소 선택</label>
+            <select class="form-control" id="locationKindU" name="locationKindU" onchange="locationKindChange(this)">
+               <option> 장소 선택 </option>
+               <option value='a'> 고궁ㆍ문화유산 </option>
+               <option value='b'> 공원 </option>
+               <option value='c'> 관광특구 </option>
+               <option value='d'> 발달상권 </option>
+               <option value='e'> 인구밀집지역 </option>
+            </select>
+            </div>
+            </div>
+         <div class="form-group col-sm-6">
+            <label for="locationKindD">세부 장소</label>
+	            <select class="form-control" id="locationKindD" name="locationKindD">
+	               <option> 세부 장소 선택 </option>
+	            </select>
+         </div>
+      </div>
+      
+      <div class="text-right" id="time"></div>
+      
+      <div id="chartImg" class="text-center py-5">
+      	  <h3>예상이미지</h3>
+	      <img src="{% static 'images/chart.png' %}">
+      </div>
+      </form>
+      <div id="chartBox" class="row py-5" style="display:none;">
+      	<div class="col-md-6">
+            <figure class="highcharts-figure">
+               <div id="container1" style="width:600px; height:500px;"></div>
+            </figure>
+      	</div>
+        <div class="col-md-6">
+        	<figure class="highcharts-figure">
+            	<div id="container2" style="width:600px; height:500px;"></div>
+            </figure>               
+        </div>    
+      </div>
+    </div> 
+    {% endblock %}
+   </body>
+	
+</html>
