@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="author" content="Untree.co">
+		<link rel="shortcut icon" href="favicon.png">
+		<meta name="description" content="" />
+		<meta name="keywords" content="bootstrap, bootstrap4" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+		<style>
+		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+		a::before {display:none;}
+		</style>
+		
+	
+		<!-- CSS here -->
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+		<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css'%}">
+		<link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css'%}">
+		<link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css'%}">
+		<link rel="stylesheet" href="{% static 'fonts/icomoon/style.css'%}">
+		<link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css'%}">
+		<link rel="stylesheet" href="{% static 'css/daterangepicker.css'%}">
+		<link rel="stylesheet" href="{% static 'css/aos.css'%}">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">	            
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />		
+	    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+	</head>
+	<body>
+	
+		<div class="container px-2 py-2">
+			{% if dto %}
+			<h4 class="text-center py-3">공유할 일정을 선택해 주세요</h4>
+			<div class="row">
+				{% for i in dto %}
+				<div class="col-md-3 mb-2">
+				<button id="select" onclick="share('{{i.p_no}}', '{{i.p_title}}')">
+					<div>
+						<img src="{% static 'images/travel.jpg' %}" width="100%" class="mt-2">
+						<h5 class="py-2">{{i.p_title}}</h5>
+						<p>{{i.p_sdate}} ~ <br>{{i.p_edate}}</p>
+					</div>
+				</button>
+				</div>
+				{% endfor %}
+			</div>
+			{% else %}
+			<h4 class="text-center">공유할 일정이 없습니다</h4>
+			{% endif%}
+		</div>
+		<script>
+			function share(no, title){
+				opener.document.getElementById("plantitle").value = title;
+				opener.document.getElementById("planno").value = no;
+				opener.document.getElementById("title").value = title;
+				self.close();
+			}
+		</script>
+	</body>
+</html>
