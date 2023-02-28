@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="UTF-8">	
+	</head>
+	<body>
+		{% block title %}
+			
+		{% endblock %}
+		{% block content %}
+			<div class="hero hero-inner">
+		    	<div class="container">
+		      		<div class="row align-items-center">
+		        		<div class="col-lg-6 mx-auto text-center">
+		          			<div class="intro-wrap">
+		            			<h1 class="mb-0">회원탈퇴</h1><br><br>              
+		          			</div>
+		        		</div>
+		      		</div>
+		      		<table>
+		         		<h6 class="text-white text-center">비밀번호를 입력해 주세요</h6> 
+		      		</table>
+		    	</div>
+  			</div>
+  			{% if dto.social == "k" or dto.social == "n" %}
+           <div class="text-center py-5">
+               <!-- <form method="post" action="mypagedelete" onclick="confirm('정말 삭제하시겠습니까?');">삭제하기</form> -->
+                  <form method="post" action="mypagedelete">
+                  <div class="text-center py-3">
+                  	 <h4 class="py-3">탈퇴하시려면 탈퇴버튼을 눌러주세요</h4>
+                     <input class="btn btn-primary mr-2" type="submit" value="탈퇴">
+                     <input class="btn btn-secondary" type="button" value="탈퇴취소" onclick="location='/member/mypage'">
+                  </div>
+                  </form>
+         </div>
+         {% else %}         
+           <div class="container py-5">
+            <form method="post" action="mypagedelete" name="passwdform">
+               <div>
+                  <div class="row">
+                     <div class="col-4"></div>
+                     <div class="col-4">
+                        <input class="form-control" type="password" name="pw" maxlength="50" autofocus>
+                        {% if message %}
+                           <span class="text-danger">{{message}}</span>                        
+                        {% endif %}
+                     </div>
+                     <div class="col-4"></div>
+                     
+                  </div>
+                  <div class="text-center py-3">
+                     <input class="btn btn-primary" type="submit" value="탈퇴">
+                     <input class="btn btn-secondary" type="button" value="탈퇴취소" onclick="location='/member/mypage'">
+                  </div>
+               </div>
+            </form>   
+         </div>
+         {% endif %}
+
+		{% endblock %}
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

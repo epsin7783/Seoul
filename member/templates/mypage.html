@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		{% block title %}
+<!-- 비회원 접근불가 로그인필요 -->
+<input type="hidden" name="memid" value="{{memid}}">
+<input type="hidden" name="social" value="{{user.is_authenticated}}">
+
+<script>
+var memid = $("input[name='memid']").val();
+var social = $("input[name='social']").val();
+if((memid == "" || memid == "None") && social == "False"){
+	alert("로그인이 필요합니다");
+	location.href="/member/login";
+}
+</script>
+		{% endblock %}
+		{% block content %}
+			<div class="hero hero-inner">
+		    	<div class="container">
+		      		<div class="row align-items-center">
+		        		<div class="col-lg-6 mx-auto text-center">
+		          			<div class="intro-wrap">
+		            			<h1 class="mb-0">마이페이지</h1><br><br>              
+		          			</div>
+		        		</div>
+		      		</div>
+		      		<table>
+		         		<h6 class="text-white text-center">나의 일정을 관리할 수 있습니다</h6> 
+		      		</table>
+		    	</div>
+  			</div>
+  			<div class="container my-5">
+  				<div class="row">
+  					<div class="col-md-3 bg-primary px-3 rounded pb-3">
+  						<div class="text-white font-weight-bold pt-4" style="font-size:2em;text-align:center;">마이페이지</div>
+  						<hr class="bg-white mb-4">
+  						<div class="ml-3 mb-3"><a style="font-size:1.5em;color:white;" href="/member/mypage">마이플랜</a></div>
+  						<div class="ml-3 mb-3"><a style="font-size:1.5em;color:white;" href="/member/wishlist">위시리스트</a></div>
+  						{% if dto.social == "k" or dto.social == "n" %}
+  						{% else %}
+  						<div class="ml-3 mb-3"><a style="font-size:1.5em;color:white;" href="/member/mypagemodify">회원정보변경</a></div>
+  						{% endif %}
+  						<div class="ml-3 mb-3"><a style="font-size:1.5em;color:white;" href="/member/mypagedelete">회원탈퇴</a></div>
+  					</div>
+  					<div class="col-md-9 pl-4">
+  						<h3>마이플랜</h3>
+  						<hr/>
+  						<div class="row px-3">
+  							{% for dto in dtos %}
+	  						<div class="col-md-3 border rounded mr-5 mb-3">
+  								<a href="/member/mypagedetail?no={{dto.p_no}}">
+	  								<div class="row px-2">
+	  									{% if dto.image %}
+	  									<img src="/media/{{dto.image}}" alt="기본이미지" width="100%" class="mt-2"/>
+	  									{% else %}
+		  								<img src="{% static 'images/travel.jpg' %}" alt="기본이미지" width="100%" class="mt-2"/>
+		  								{% endif %}
+	  								</div>
+	  								<div class="row px-2 py-2">
+	  									<h4>{{dto.p_title}}</h4>
+	  								</div>
+	  								<div class="row px-2 py-2">
+	  									<p>{{dto.p_sdate}}</p>
+	  								</div>
+	  							</a>
+  							</div>
+  							{% endfor %}
+  						</div>
+  					</div>
+  				</div>
+  				
+  			</div>
+  		{% endblock %}
+	</body>
+</html>

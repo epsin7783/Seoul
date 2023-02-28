@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">	
+	</head>
+	<body>
+		{% block title %}
+		
+		{% endblock %}
+		{% block content %}
+		<div class="hero hero-inner">
+		    	<div class="container">
+		      		<div class="row align-items-center">
+		        		<div class="col-lg-6 mx-auto text-center">
+		          			<div class="intro-wrap">
+		            			<h1 class="mb-0">마이페이지</h1><br><br>              
+		          			</div>
+		        		</div>
+		      		</div>
+		      		
+		    	</div>
+  			</div>
+			{% if memid %}
+				<table>
+					<tr>
+						<th> <span>{{memid}}</span>님 안녕하세요 </th>
+					</tr>
+					<tr>
+						<td align="center">
+							<input class="inputbutton" type="button" value="수정"
+								onclick="location='mypagemodify'">
+							<input class="inputbutton" type="button" value="탈퇴" 
+								onclick="location='mypagedelete'">
+							<input class="inputbutton" type="button" value="로그아웃"
+								onclick="location='logout'">	
+						</td>
+					</tr>
+				</table>				
+			{% else %}
+				<form method="post" action="login" name="mainform">
+					<table>
+						<tr>
+							<th colspan="2"> 비회원이시면 회원가입을 해주세요 </th>
+						</tr>
+						<tr>
+							<th> 아이디 </th>
+							<td> <input class="input" type="text" name="id" autofocus> </td>
+						</tr>
+						<tr>
+							<th> 비밀번호 </th>
+							<td> <input class="input" type="password" name="pw"> </td>
+						</tr>
+						<tr>
+							<th colspan="2">	
+								<input class="inputbutton" type="submit" value="로그인">
+								<input class="inputbutton" type="reset" value="취소">
+								<input class="inputbutton" type="button" value="회원가입"
+									onclick="location='mwrite'">
+							</th>
+						</tr>
+					</table>
+				</form>			
+			{% endif %}	
+		{% endblock %}
+	</body>
+</html>
