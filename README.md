@@ -1,0 +1,2 @@
+# Seoul
+Django Project
